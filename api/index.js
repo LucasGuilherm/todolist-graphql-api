@@ -44,10 +44,6 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     async items(_, { isCompleted, tittle }) {
-      if (tittle == "Escrevi e sai correndo") {
-        return [{ tittle: "Pau no cu de quem ta lendo" }];
-      }
-
       const itemsRef = admin.firestore().collection("items");
 
       let items = itemsRef;
