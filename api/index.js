@@ -80,6 +80,8 @@ const server = new ApolloServer({
   resolvers,
   csrfPrevention: true,
   cache: "bounded",
+  introspection: true,
+  playground: true,
 });
 
 // The `listen` method launches a web server.
