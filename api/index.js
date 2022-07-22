@@ -80,13 +80,7 @@ const server = new ApolloServer({
   resolvers,
   csrfPrevention: true,
   cache: "bounded",
-  introspection: true,
   playground: true,
-  plugins: [
-    process.env.NODE_ENV === "production"
-      ? ApolloServerPluginLandingPageDisabled()
-      : ApolloServerPluginLandingPageGraphQLPlayground(),
-  ],
 });
 
 // The `listen` method launches a web server.
