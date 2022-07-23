@@ -18,12 +18,14 @@ import {
   gql,
   UserInputError,
 } from "apollo-server";
+import { format } from "date-fns";
 
 const typeDefs = gql`
   type Item {
     tittle: String
     description: String
     isCompleted: Boolean
+    creationDate: String
   }
 
   type Query {
@@ -63,6 +65,10 @@ const resolvers = {
   Mutation: {
     async createItem(_, { itemProps }) {
       const itemsRef = admin.firestore().collection("items");
+
+      Object.assign(itemProps, {
+        creationDate: admin.firestore.Timestamp.fromDate(new Date()).toDate(),
+      });
 
       try {
         await itemsRef.add(itemProps);

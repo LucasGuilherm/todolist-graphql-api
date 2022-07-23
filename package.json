@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^3.10.0",
+    "date-fns": "^2.29.1",
     "dotenv": "^16.0.1",
     "firebase-admin": "^11.0.0",
     "graphql": "^16.5.0"
