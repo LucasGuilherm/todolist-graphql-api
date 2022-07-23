@@ -59,7 +59,13 @@ const resolvers = {
       }
 
       items = await items.get();
-      return items.docs.map((item) => item.data());
+      return items.docs.map((item) => {
+        let itemNew = item.data();
+
+        itemNew.creationDate = itemNew.creationDate.toDate();
+
+        return itemNew;
+      });
     },
   },
   Mutation: {
