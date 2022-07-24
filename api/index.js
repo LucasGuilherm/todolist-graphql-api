@@ -22,6 +22,7 @@ import { format } from "date-fns";
 
 const typeDefs = gql`
   type Item {
+    itemId: ID
     tittle: String
     description: String
     isCompleted: Boolean
@@ -40,6 +41,7 @@ const typeDefs = gql`
 
   type Mutation {
     createItem(itemProps: Filter): Item
+    deleteItem(itemId: ID): String
   }
 `;
 
@@ -62,6 +64,7 @@ const resolvers = {
       return items.docs.map((item) => {
         let itemNew = item.data();
 
+        itemNew.itemId = item.id;
         itemNew.creationDate = itemNew.creationDate.toDate();
 
         return itemNew;
@@ -77,12 +80,25 @@ const resolvers = {
       });
 
       try {
-        await itemsRef.add(itemProps);
+        const createdId = await itemsRef.add(itemProps);
+
+        Object.assign(itemProps, { itemId: createdId.id });
       } catch (error) {
         throw new UserInputError(error);
       }
 
       return itemProps;
+    },
+    async deleteItem(_, { itemId }) {
+      const itemsRef = admin.firestore().collection("items");
+
+      try {
+        await itemsRef.doc(itemId).delete();
+      } catch (error) {
+        throw new ApolloError(error.message);
+      }
+
+      return `Item ${itemId} deletado com sucesso!`;
     },
   },
 };
